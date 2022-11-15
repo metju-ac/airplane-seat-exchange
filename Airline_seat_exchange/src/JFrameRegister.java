@@ -1,17 +1,16 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
 import java.util.Objects;
 
 public class JFrameRegister extends JFrame {
     private JPanel registerPanel;
     private JTextField tfUsername;
-    private JTextField tfPassword;
     private JTextField tfEmail;
     private JButton buttonRegister;
     private JButton buttonBack;
     private JPanel mainPanel;
+    private JPasswordField pfPassword;
 
     public JFrameRegister() {
         setContentPane(mainPanel);
@@ -33,7 +32,7 @@ public class JFrameRegister extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String username = tfUsername.getText();
                 String email = tfEmail.getText();
-                String password = tfPassword.getText();
+                String password = pfPassword.getText();
 
                 if (Objects.equals(username, "")) {
                     JOptionPane.showMessageDialog(new JFrame(), "Empty username!");

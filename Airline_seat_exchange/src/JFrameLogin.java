@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class JFrameLogin extends JFrame {
     private JTextField tfUsername;
@@ -21,6 +22,35 @@ public class JFrameLogin extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 new JFrameWelcome();
                 dispose();
+            }
+        });
+
+        buttonLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = tfUsername.getText();
+                String password = pfPassword.getText();
+
+                if (Objects.equals(username, "")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Empty username!");
+                    return;
+                }
+                if (Objects.equals(password, "")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Empty password!");
+                    return;
+                }
+
+                User user = new User(username);
+                int logged = user.Login(password);
+
+                if (logged == 0) {
+                    new JFrameLoggedIn(user);
+                    dispose();
+                } else if (logged == 1) {
+                    JOptionPane.showMessageDialog(new JFrame(), "No user with this username exists!");
+                } else if (logged == 2) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Wrong password!");
+                }
             }
         });
     }

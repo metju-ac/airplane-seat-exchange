@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7,10 +8,22 @@ public class User {
     private String password;
     private String email;
 
+    private String getUsername() {
+        return this.username;
+    }
+
+    private String getEmail() {
+        return this.email;
+    }
+
     public User(String u, String p, String e) {
         this.username = u;
         this.password = p;
         this.email = e;
+    }
+
+    public User(String username) {
+        this.username = username;
     }
 
     private Boolean checkUsername() {
@@ -20,11 +33,7 @@ public class User {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, this.username);
             ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                return false;
-            } else {
-                return true;
-            }
+            return !rs.next();
         } catch (Exception e) {
             return false;
         }
@@ -37,11 +46,7 @@ public class User {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, this.email);
             ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                return false;
-            } else {
-                return true;
-            }
+            return !rs.next();
         } catch (Exception e) {
             return false;
         }
@@ -87,8 +92,33 @@ public class User {
             }
 
         } catch (SQLException exception) {
-            System.out.println(exception);;
+            System.out.println(exception);
         }
-        return 1;
+        return -1;
+    }
+
+    public int Login(String password) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
+                "root", "Rootroot")) {
+            String sql = "SELECT * FROM Users WHERE username=?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, this.username);
+            ResultSet rs = statement.executeQuery();
+
+            if (! rs.next()) {
+                return 1;
+            }
+            if (!Objects.equals(rs.getString("password"), password)) {
+                return 2;
+            }
+
+            this.password = password;
+            this.email = rs.getString("email");
+            return 0;
+
+        } catch (SQLException exception) {
+            System.out.println(exception);
+        }
+        return -1;
     }
 }
