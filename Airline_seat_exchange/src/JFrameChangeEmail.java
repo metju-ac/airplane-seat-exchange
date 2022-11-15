@@ -2,15 +2,16 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class JFrameLoggedIn extends JFrame {
-    private JButton buttonLogOut;
-    private JButton buttonChangeEmail;
-    private JButton buttonChangePassword;
-    private JButton buttonDeleteAccount;
+public class JFrameChangeEmail extends JFrame {
     private JPanel mainPanel;
+    private JTextField tfOldEmail;
+    private JTextField tfNewEmail;
+    private JPasswordField pwPassword;
+    private JButton buttonBack;
+    private JButton buttonConfirm;
     private final User user;
 
-    public JFrameLoggedIn(User user) {
+    public JFrameChangeEmail(User user) {
         assert user != null;
         this.user = user;
 
@@ -20,21 +21,11 @@ public class JFrameLoggedIn extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
 
-        System.out.println(this.user.getUsername());
-
-        buttonLogOut.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new JFrameWelcome();
-                dispose();
-            }
-        });
-
-        buttonChangeEmail.addActionListener(new ActionListener() {
+        buttonBack.addActionListener(new ActionListener() {
             private User user;
             @Override
             public void actionPerformed(ActionEvent e) {
-                new JFrameChangeEmail(this.user);
+                new JFrameLoggedIn(this.user);
                 dispose();
             }
             private ActionListener init(User user) {

@@ -8,11 +8,11 @@ public class User {
     private String password;
     private String email;
 
-    private String getUsername() {
+    public String getUsername() {
         return this.username;
     }
 
-    private String getEmail() {
+    public String getEmail() {
         return this.email;
     }
 
@@ -52,10 +52,10 @@ public class User {
         }
     }
 
-    private Boolean checkEmailFormat() {
+    private Boolean checkEmailFormat(String email) {
         String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(this.email);
+        Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
 
@@ -70,7 +70,7 @@ public class User {
         if (! checkEmail()) {
             return 2;
         }
-        if (! checkEmailFormat()) {
+        if (! checkEmailFormat(this.email)) {
             return 3;
         }
         if (! checkPassword()) {
@@ -121,4 +121,10 @@ public class User {
         }
         return -1;
     }
+
+//    public int changeEmail(String newEmail) {
+//        if (!checkEmailFormat(newEmail)) {
+//            return 1;
+//        }
+//    }
 }
