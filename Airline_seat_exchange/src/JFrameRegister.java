@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.Objects;
 
 public class JFrameRegister extends JFrame {
     private JPanel registerPanel;
@@ -30,34 +31,36 @@ public class JFrameRegister extends JFrame {
         buttonRegister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String uusername = tfUsername.getText();
+                String username = tfUsername.getText();
                 String email = tfEmail.getText();
-                String ppassword = tfPassword.getText();
-//                JOptionPane.showMessageDialog(new JFrame(), "Eggs are not supposed to be green.");
+                String password = tfPassword.getText();
 
-                String dbURL = "jdbc:mysql://localhost:3306/airplane_seat_exchange";
-                String username = "root";
-                String password = "Rootroot";
-
-
-                try (Connection connection = DriverManager.getConnection(dbURL, username, password)) {
-                    System.out.println(456);
-                    String sql = "INSERT INTO Users (username, password, email) VALUES (?, ?, ?)";
-
-                    PreparedStatement statement = connection.prepareStatement(sql);
-                    statement.setString(1, uusername);
-                    statement.setString(2, ppassword);
-                    statement.setString(3, email);
-
-                    int rowsInserted = statement.executeUpdate();
-                    if (rowsInserted > 0) {
-                        System.out.println("A new user was inserted successfully!");
-                    }
-
-                } catch (SQLException exception) {
-                    System.out.println(exception);;
+                if (Objects.equals(username, "")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Empty username!");
+                    return;
+                }
+                if (Objects.equals(email, "")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Empty email!");
+                    return;
+                }
+                if (Objects.equals(password, "")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Empty password!");
+                    return;
                 }
 
+                User user = new User(username, password, email);
+                int added = user.addToDatabase();
+                if (added == 0) {
+                    JOptionPane.showMessageDialog(new JFrame(), "User added successfully");
+                } else if (added == 1) {
+                    JOptionPane.showMessageDialog(new JFrame(), "User with this username already exists!");
+                } else if (added == 2) {
+                    JOptionPane.showMessageDialog(new JFrame(), "User with this email already exists!");
+                } else if (added == 3) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Invalid email format");
+                } else if (added == 4) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Password too short!");
+                }
             }
         });
     }
