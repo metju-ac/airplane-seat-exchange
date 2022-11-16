@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 
 public class JFrameAddTicket extends JFrame {
     private JComboBox cbCountryFrom;
@@ -21,8 +22,13 @@ public class JFrameAddTicket extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
 
-        cbCountryFrom.addItem("First");
-        cbCountryFrom.addItem("Second");
+        CountryManager countryManager = new CountryManager();
+        ArrayList<Country> countries = countryManager.getCountries();
+
+        for (Country country : countries) {
+            cbCountryFrom.addItem(country);
+            cbCountryTo.addItem(country);
+        }
 
         buttonBack.addActionListener(new ActionListener() {
             private User user;
@@ -40,16 +46,10 @@ public class JFrameAddTicket extends JFrame {
         cbCountryFrom.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cbAirportFrom.addItem("One");
-                cbAirportFrom.addItem("Two");
-                cbAirportFrom.addItem("Three");
+                Country selected = (Country) cbCountryFrom.getSelectedItem();
+                System.out.println(selected);
             }
         });
-        cbCountryFrom.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
 
-            }
-        });
     }
 }

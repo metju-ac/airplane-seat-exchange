@@ -13,6 +13,10 @@ public class Country {
         return code;
     }
 
+    public String toString() {
+        return this.name;
+    }
+
     public Country(int i, String n, String c) {
         this.id = i;
         this.name = n;
