@@ -8,6 +8,7 @@ public class JFrameLoggedIn extends JFrame {
     private JButton buttonChangePassword;
     private JButton buttonDeleteAccount;
     private JPanel mainPanel;
+    private JButton buttonAddTicket;
 
     public JFrameLoggedIn(User user) {
         assert user != null;
@@ -57,6 +58,19 @@ public class JFrameLoggedIn extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new JFrameDeleteAccount(this.user);
+                dispose();
+            }
+            private ActionListener init(User user) {
+                this.user = user;
+                return this;
+            }
+        }.init(user));
+
+        buttonAddTicket.addActionListener(new ActionListener() {
+            private User user;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new JFrameAddTicket(this.user);
                 dispose();
             }
             private ActionListener init(User user) {

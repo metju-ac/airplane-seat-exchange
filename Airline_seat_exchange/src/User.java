@@ -35,7 +35,7 @@ public class User {
     private Boolean checkUsername() {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
                 "root", "Rootroot")) {
-            String sql = "SELECT * FROM Users WHERE username = (?)";
+            String sql = "SELECT * FROM user WHERE username = (?)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, this.username);
             ResultSet rs = statement.executeQuery();
@@ -48,7 +48,7 @@ public class User {
     private Boolean checkEmail(String email) {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
                 "root", "Rootroot")) {
-            String sql = "SELECT * FROM Users WHERE email = (?)";
+            String sql = "SELECT * FROM user WHERE email = (?)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             ResultSet rs = statement.executeQuery();
@@ -85,7 +85,7 @@ public class User {
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
                 "root", "Rootroot")) {
-            String sql = "INSERT INTO Users (username, password, email, score) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO user (username, password, email, score) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, this.username);
             statement.setString(2, this.password);
@@ -106,7 +106,7 @@ public class User {
     public int Login(String password) {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
                 "root", "Rootroot")) {
-            String sql = "SELECT * FROM Users WHERE username=?";
+            String sql = "SELECT * FROM user WHERE username=?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, this.username);
             ResultSet rs = statement.executeQuery();
@@ -145,7 +145,7 @@ public class User {
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
                 "root", "Rootroot")) {
-            String sql = "UPDATE Users SET email = ? WHERE username = ?";
+            String sql = "UPDATE user SET email = ? WHERE username = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, newEmail);
             statement.setString(2, this.username);
@@ -171,7 +171,7 @@ public class User {
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
                 "root", "Rootroot")) {
-            String sql = "UPDATE Users SET password = ? WHERE username = ?";
+            String sql = "UPDATE user SET password = ? WHERE username = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, newPassword);
             statement.setString(2, this.username);
@@ -194,7 +194,7 @@ public class User {
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
                 "root", "Rootroot")) {
-            String sql = "DELETE FROM Users WHERE username = ?";
+            String sql = "DELETE FROM user WHERE username = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, this.username);
 
