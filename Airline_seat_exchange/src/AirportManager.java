@@ -30,14 +30,14 @@ public class AirportManager {
         return airports;
     }
 
-    public ArrayList<Airport> getAirports(int selectedCountryId) {
+    public ArrayList<Airport> getAirports(Country country) {
         ArrayList<Airport> airports = new ArrayList<>();
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
                 "root", "Rootroot")) {
             String sql = "SELECT  * FROM airport WHERE airport_country_id = (?)";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, selectedCountryId);
+            statement.setInt(1, country.getId());
 
             ResultSet rs = statement.executeQuery();
             int airportId;

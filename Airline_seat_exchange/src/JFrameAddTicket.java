@@ -23,8 +23,9 @@ public class JFrameAddTicket extends JFrame {
         setVisible(true);
 
         CountryManager countryManager = new CountryManager();
-        ArrayList<Country> countries = countryManager.getCountries();
+        AirportManager airportManager = new AirportManager();
 
+        ArrayList<Country> countries = countryManager.getCountries();
         for (Country country : countries) {
             cbCountryFrom.addItem(country);
             cbCountryTo.addItem(country);
@@ -47,7 +48,23 @@ public class JFrameAddTicket extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Country selected = (Country) cbCountryFrom.getSelectedItem();
-                System.out.println(selected);
+                ArrayList<Airport> airportsFrom = airportManager.getAirports(selected);
+                cbAirportFrom.removeAllItems();
+                for (Airport airport : airportsFrom) {
+                    cbAirportFrom.addItem(airport);
+                }
+            }
+        });
+
+        cbCountryTo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Country selected = (Country) cbCountryTo.getSelectedItem();
+                ArrayList<Airport> airportsFrom = airportManager.getAirports(selected);
+                cbAirportTo.removeAllItems();
+                for (Airport airport : airportsFrom) {
+                    cbAirportTo.addItem(airport);
+                }
             }
         });
 
