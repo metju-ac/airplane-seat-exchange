@@ -20,8 +20,6 @@ public class JFrameLoggedIn extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
 
-        System.out.println(this.user.getUsername());
-
         buttonLogOut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

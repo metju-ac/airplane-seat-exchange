@@ -39,12 +39,12 @@ public class User {
         }
     }
 
-    private Boolean checkEmail() {
+    private Boolean checkEmail(String email) {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
                 "root", "Rootroot")) {
             String sql = "SELECT * FROM Users WHERE email = (?)";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, this.email);
+            statement.setString(1, email);
             ResultSet rs = statement.executeQuery();
             return !rs.next();
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class User {
         if (! checkUsername()) {
             return 1;
         }
-        if (! checkEmail()) {
+        if (! checkEmail(this.email)) {
             return 2;
         }
         if (! checkEmailFormat(this.email)) {
@@ -122,9 +122,36 @@ public class User {
         return -1;
     }
 
-//    public int changeEmail(String newEmail) {
-//        if (!checkEmailFormat(newEmail)) {
-//            return 1;
-//        }
-//    }
+    public int changeEmail(String oldEmail, String newEmail, String password) {
+        if (!Objects.equals(oldEmail, this.email)) {
+            return 1;
+        }
+        if (!Objects.equals(password, this.password)) {
+            return 2;
+        }
+        if (!checkEmailFormat(newEmail)) {
+            return 3;
+        }
+        if (!checkEmail(newEmail)) {
+            return 4;
+        }
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
+                "root", "Rootroot")) {
+            String sql = "UPDATE Users SET email = ? WHERE username = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, newEmail);
+            statement.setString(2, this.email);
+
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("A new user was inserted successfully!");
+                this.email = newEmail;
+                return 0;
+            }
+        } catch (SQLException exception) {
+            System.out.println(exception);
+        }
+        return -1;
+    }
 }

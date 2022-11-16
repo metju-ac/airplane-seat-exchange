@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class JFrameChangeEmail extends JFrame {
     private JPanel mainPanel;
@@ -27,6 +28,46 @@ public class JFrameChangeEmail extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 new JFrameLoggedIn(this.user);
                 dispose();
+            }
+            private ActionListener init(User user) {
+                this.user = user;
+                return this;
+            }
+        }.init(this.user));
+
+        buttonConfirm.addActionListener(new ActionListener() {
+            private User user;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String oldEmail = tfOldEmail.getText();
+                String newEmail = tfNewEmail.getText();
+                String password = pwPassword.getText();
+
+                if (Objects.equals(oldEmail, "")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Empty old email!");
+                    return;
+                }
+                if (Objects.equals(newEmail, "")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Empty new email!");
+                    return;
+                }
+                if (Objects.equals(password, "")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Empty password!");
+                    return;
+                }
+
+                int changed = this.user.changeEmail(oldEmail, newEmail, password);
+                if (changed == 0) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Changed successfully");
+                } else if (changed == 1) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Wrong old email!");
+                } else if (changed == 2) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Wrong password!");
+                } else if (changed == 3) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Invalid new email!");
+                } else if (changed == 4) {
+                    JOptionPane.showMessageDialog(new JFrame(), "This email is already registered!");
+                }
             }
             private ActionListener init(User user) {
                 this.user = user;

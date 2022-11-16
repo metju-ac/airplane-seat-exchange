@@ -6,3 +6,5 @@ public class Main {
         jFrame.setVisible(true);
     }
 }
+
+//TODO change getText to getPassword in all password fields
