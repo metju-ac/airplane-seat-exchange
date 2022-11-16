@@ -59,7 +59,7 @@ public class User {
         return matcher.matches();
     }
 
-    private Boolean checkPassword() {
+    private Boolean checkPassword(String password) {
         return (password.length() >= 8);
     }
 
@@ -73,7 +73,7 @@ public class User {
         if (! checkEmailFormat(this.email)) {
             return 3;
         }
-        if (! checkPassword()) {
+        if (! checkPassword(this.password)) {
             return 4;
         }
 
@@ -145,8 +145,33 @@ public class User {
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
-                System.out.println("A new user was inserted successfully!");
                 this.email = newEmail;
+                return 0;
+            }
+        } catch (SQLException exception) {
+            System.out.println(exception);
+        }
+        return -1;
+    }
+
+    public int changePassword(String oldPassword, String newPassword) {
+        if (!Objects.equals(oldPassword, this.password)) {
+            return 1;
+        }
+        if (!checkPassword(newPassword)) {
+            return 2;
+        }
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
+                "root", "Rootroot")) {
+            String sql = "UPDATE Users SET password = ? WHERE username = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, newPassword);
+            statement.setString(2, this.password);
+
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                this.password = newPassword;
                 return 0;
             }
         } catch (SQLException exception) {
