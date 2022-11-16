@@ -3,15 +3,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 
-public class JFrameChangeEmail extends JFrame {
-    private JPanel mainPanel;
-    private JTextField tfOldEmail;
-    private JTextField tfNewEmail;
+public class JFrameDeleteAccount extends JFrame{
     private JPasswordField pfPassword;
     private JButton buttonBack;
     private JButton buttonConfirm;
+    private JPanel mainPanel;
 
-    public JFrameChangeEmail(User user) {
+    public JFrameDeleteAccount(User user) {
         assert user != null;
 
         setContentPane(mainPanel);
@@ -37,34 +35,20 @@ public class JFrameChangeEmail extends JFrame {
             private User user;
             @Override
             public void actionPerformed(ActionEvent e) {
-                String oldEmail = tfOldEmail.getText();
-                String newEmail = tfNewEmail.getText();
                 String password = pfPassword.getText();
-
-                if (Objects.equals(oldEmail, "")) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Empty old email!");
-                    return;
-                }
-                if (Objects.equals(newEmail, "")) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Empty new email!");
-                    return;
-                }
                 if (Objects.equals(password, "")) {
                     JOptionPane.showMessageDialog(new JFrame(), "Empty password!");
                     return;
                 }
 
-                int changed = this.user.changeEmail(oldEmail, newEmail, password);
-                if (changed == 0) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Changed successfully");
-                } else if (changed == 1) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Wrong old email!");
-                } else if (changed == 2) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Wrong password!");
-                } else if (changed == 3) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Invalid new email!");
-                } else if (changed == 4) {
-                    JOptionPane.showMessageDialog(new JFrame(), "This email is already registered!");
+                int deleted = this.user.deleteAccount(password);
+                System.out.println(deleted);
+                if (deleted == 0) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Deleted successfully");
+                    new JFrameWelcome();
+                    dispose();
+                } else if (deleted == 1) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Wrong password");
                 }
             }
             private ActionListener init(User user) {

@@ -12,8 +12,6 @@ public class JFrameLoggedIn extends JFrame {
     public JFrameLoggedIn(User user) {
         assert user != null;
 
-        System.out.println(user.getUsername());
-
         setContentPane(mainPanel);
         setTitle("Airplane seat exchange");
         setSize(450, 450);
@@ -46,6 +44,19 @@ public class JFrameLoggedIn extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new JFrameChangePassword(this.user);
+                dispose();
+            }
+            private ActionListener init(User user) {
+                this.user = user;
+                return this;
+            }
+        }.init(user));
+
+        buttonDeleteAccount.addActionListener(new ActionListener() {
+            private User user;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new JFrameDeleteAccount(this.user);
                 dispose();
             }
             private ActionListener init(User user) {

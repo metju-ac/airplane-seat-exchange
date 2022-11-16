@@ -7,6 +7,7 @@ public class User {
     private final String username;
     private String password;
     private String email;
+    private int score;
 
     public String getUsername() {
         return this.username;
@@ -16,10 +17,15 @@ public class User {
         return this.email;
     }
 
+    public int getScore() {
+        return this.score;
+    }
+
     public User(String u, String p, String e) {
         this.username = u;
         this.password = p;
         this.email = e;
+        this.score = 0;
     }
 
     public User(String username) {
@@ -79,15 +85,15 @@ public class User {
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
                 "root", "Rootroot")) {
-            String sql = "INSERT INTO Users (username, password, email) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO Users (username, password, email, score) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, this.username);
             statement.setString(2, this.password);
             statement.setString(3, this.email);
+            statement.setInt(4, this.score);
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
-                System.out.println("A new user was inserted successfully!");
                 return 0;
             }
 
@@ -114,6 +120,7 @@ public class User {
 
             this.password = password;
             this.email = rs.getString("email");
+            this.score = rs.getInt("score");
             return 0;
 
         } catch (SQLException exception) {
@@ -143,8 +150,8 @@ public class User {
             statement.setString(1, newEmail);
             statement.setString(2, this.username);
 
-            int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
+            int rowsChanged = statement.executeUpdate();
+            if (rowsChanged > 0) {
                 this.email = newEmail;
                 return 0;
             }
@@ -169,9 +176,30 @@ public class User {
             statement.setString(1, newPassword);
             statement.setString(2, this.username);
 
-            int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
+            int rowsChanged = statement.executeUpdate();
+            if (rowsChanged > 0) {
                 this.password = newPassword;
+                return 0;
+            }
+        } catch (SQLException exception) {
+            System.out.println(exception);
+        }
+        return -1;
+    }
+
+    public int deleteAccount(String password) {
+        if (!Objects.equals(password, this.password)) {
+            return 1;
+        }
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
+                "root", "Rootroot")) {
+            String sql = "DELETE FROM Users WHERE username = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, this.username);
+
+            int rowsChanged = statement.executeUpdate();
+            if (rowsChanged > 0) {
                 return 0;
             }
         } catch (SQLException exception) {
