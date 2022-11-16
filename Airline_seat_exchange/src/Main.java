@@ -1,9 +1,14 @@
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        CountryManager cm = new CountryManager();
-        cm.getCountries();
+        AirportManager am = new AirportManager();
+        ArrayList<Airport> airports = am.getAirports(3);
+        for (Airport airport : airports) {
+            System.out.println(airport);
+        }
+
         JFrame jFrame = new JFrameWelcome();
         jFrame.setVisible(true);
     }

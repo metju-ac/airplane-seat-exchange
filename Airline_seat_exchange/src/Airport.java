@@ -1,22 +1,22 @@
-public class Country {
+public class Airport {
     private final int id;
+    private final int countryId;
     private final String name;
-    private final String code;
 
     public int getId() {
         return this.id;
     }
+    public int getCountryId() {
+        return this.countryId;
+    }
     public String getName() {
         return this.name;
     }
-    public String getCode() {
-        return this.code;
-    }
 
-    public Country(int i, String n, String c) {
+    public Airport(int i, int c, String n) {
         this.id = i;
+        this.countryId = c;
         this.name = n;
-        this.code = c;
     }
 
     public String toString() {
