@@ -141,7 +141,7 @@ public class User {
             String sql = "UPDATE Users SET email = ? WHERE username = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, newEmail);
-            statement.setString(2, this.email);
+            statement.setString(2, this.username);
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
@@ -167,7 +167,7 @@ public class User {
             String sql = "UPDATE Users SET password = ? WHERE username = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, newPassword);
-            statement.setString(2, this.password);
+            statement.setString(2, this.username);
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {

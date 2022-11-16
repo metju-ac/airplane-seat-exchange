@@ -14,6 +14,8 @@ public class JFrameChangeEmail extends JFrame {
     public JFrameChangeEmail(User user) {
         assert user != null;
 
+        System.out.println(user.getUsername());
+
         setContentPane(mainPanel);
         setTitle("Airplane seat exchange");
         setSize(450, 450);
@@ -55,6 +57,7 @@ public class JFrameChangeEmail extends JFrame {
                 }
 
                 int changed = this.user.changeEmail(oldEmail, newEmail, password);
+                System.out.println(changed);
                 if (changed == 0) {
                     JOptionPane.showMessageDialog(new JFrame(), "Changed successfully");
                 } else if (changed == 1) {

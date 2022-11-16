@@ -12,6 +12,8 @@ public class JFrameLoggedIn extends JFrame {
     public JFrameLoggedIn(User user) {
         assert user != null;
 
+        System.out.println(user.getUsername());
+
         setContentPane(mainPanel);
         setTitle("Airplane seat exchange");
         setSize(450, 450);
