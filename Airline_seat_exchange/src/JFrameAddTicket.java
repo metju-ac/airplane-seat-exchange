@@ -47,6 +47,24 @@ public class JFrameAddTicket extends JFrame {
         cbAirportTo.setSelectedIndex(-1);
         cbAirportTo.addItemListener(itemListenerAirportTo);
 
+        ItemListener itemListenerAirportFrom = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                airportsSelected[0] = (Airport) cbAirportFrom.getSelectedItem();
+                if (airportsSelected[1] == null) {
+                    return;
+                }
+                ArrayList<Flight> flights = flightManager.getFlights(airportsSelected[0], airportsSelected[1]);
+                cbFlight.removeAllItems();
+                for (Flight flight : flights) {
+                    cbFlight.addItem(flight);
+                }
+            }
+        };
+
+        cbAirportFrom.setSelectedIndex(-1);
+        cbAirportFrom.addItemListener(itemListenerAirportFrom);
+
         ArrayList<Country> countries = countryManager.getCountries();
         for (Country country : countries) {
             cbCountryFrom.addItem(country);
@@ -71,10 +89,13 @@ public class JFrameAddTicket extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Country selected = (Country) cbCountryFrom.getSelectedItem();
                 ArrayList<Airport> airportsFrom = airportManager.getAirports(selected);
+                cbAirportFrom.removeItemListener(itemListenerAirportFrom);
                 cbAirportFrom.removeAllItems();
                 for (Airport airport : airportsFrom) {
                     cbAirportFrom.addItem(airport);
                 }
+                cbAirportFrom.setSelectedIndex(-1);
+                cbAirportFrom.addItemListener(itemListenerAirportFrom);
             }
         });
 
@@ -90,31 +111,14 @@ public class JFrameAddTicket extends JFrame {
                 }
                 cbAirportTo.setSelectedIndex(-1);
                 cbAirportTo.addItemListener(itemListenerAirportTo);
-                System.out.println("added");
             }
         });
 
-        cbAirportFrom.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                airportsSelected[0] = (Airport) cbAirportFrom.getSelectedItem();
-                if (airportsSelected[1] == null) {
-                    return;
-                }
-                ArrayList<Flight> flights = flightManager.getFlights(airportsSelected[0], airportsSelected[1]);
-                cbFlight.removeAllItems();
-                for (Flight flight : flights) {
-                    cbFlight.addItem(flight);
-                }
-            }
-        });
-
-//        cbAirportTo.addActionListener(new ActionListener() {
+//        cbAirportFrom.addActionListener(new ActionListener() {
 //            @Override
 //            public void actionPerformed(ActionEvent e) {
-//                System.out.println(e);
-//                airportsSelected[1] = (Airport) cbAirportTo.getSelectedItem();
-//                if (airportsSelected[0] == null) {
+//                airportsSelected[0] = (Airport) cbAirportFrom.getSelectedItem();
+//                if (airportsSelected[1] == null) {
 //                    return;
 //                }
 //                ArrayList<Flight> flights = flightManager.getFlights(airportsSelected[0], airportsSelected[1]);
@@ -125,13 +129,5 @@ public class JFrameAddTicket extends JFrame {
 //            }
 //        });
 
-//        cbAirportTo.addItemListener(new ItemListener() {
-//            @Override
-//            public void itemStateChanged(ItemEvent e) {
-//                if (e.getStateChange() == ItemEvent.SELECTED) {
-//                    System.out.println(456);
-//                }
-//            }
-//        });
     }
 }
