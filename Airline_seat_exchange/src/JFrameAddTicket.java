@@ -27,25 +27,13 @@ public class JFrameAddTicket extends JFrame {
         AirportManager airportManager = new AirportManager();
         FlightManager flightManager = new FlightManager();
 
+        ArrayList<Country> countries = countryManager.getCountries();
+        for (Country country : countries) {
+            cbCountryFrom.addItem(country);
+            cbCountryTo.addItem(country);
+        }
+
         final Airport[] airportsSelected = new Airport[2]; //0 = from, 1 = to
-
-        ItemListener itemListenerAirportTo = new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                airportsSelected[1] = (Airport) cbAirportTo.getSelectedItem();
-                if (airportsSelected[0] == null) {
-                    return;
-                }
-                ArrayList<Flight> flights = flightManager.getFlights(airportsSelected[0], airportsSelected[1]);
-                cbFlight.removeAllItems();
-                for (Flight flight : flights) {
-                    cbFlight.addItem(flight);
-                }
-            }
-        };
-
-        cbAirportTo.setSelectedIndex(-1);
-        cbAirportTo.addItemListener(itemListenerAirportTo);
 
         ItemListener itemListenerAirportFrom = new ItemListener() {
             @Override
@@ -65,11 +53,61 @@ public class JFrameAddTicket extends JFrame {
         cbAirportFrom.setSelectedIndex(-1);
         cbAirportFrom.addItemListener(itemListenerAirportFrom);
 
-        ArrayList<Country> countries = countryManager.getCountries();
-        for (Country country : countries) {
-            cbCountryFrom.addItem(country);
-            cbCountryTo.addItem(country);
-        }
+        ItemListener itemListenerAirportTo = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                airportsSelected[1] = (Airport) cbAirportTo.getSelectedItem();
+                if (airportsSelected[0] == null) {
+                    return;
+                }
+                ArrayList<Flight> flights = flightManager.getFlights(airportsSelected[0], airportsSelected[1]);
+                cbFlight.removeAllItems();
+                for (Flight flight : flights) {
+                    cbFlight.addItem(flight);
+                }
+            }
+        };
+
+        cbAirportTo.setSelectedIndex(-1);
+        cbAirportTo.addItemListener(itemListenerAirportTo);
+
+        ItemListener itemListenerCountryFrom = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                Country selected = (Country) cbCountryFrom.getSelectedItem();
+                ArrayList<Airport> airportsFrom = airportManager.getAirports(selected);
+                cbAirportFrom.removeItemListener(itemListenerAirportFrom);
+                cbAirportFrom.removeAllItems();
+                for (Airport airport : airportsFrom) {
+                    cbAirportFrom.addItem(airport);
+                }
+                cbAirportFrom.setSelectedIndex(-1);
+                cbAirportFrom.addItemListener(itemListenerAirportFrom);
+                cbFlight.removeAllItems();
+            }
+        };
+
+        cbCountryFrom.setSelectedIndex(-1);
+        cbCountryFrom.addItemListener(itemListenerCountryFrom);
+
+        ItemListener itemListenerCountryTo = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                Country selected = (Country) cbCountryTo.getSelectedItem();
+                ArrayList<Airport> airportsFrom = airportManager.getAirports(selected);
+                cbAirportTo.removeItemListener(itemListenerAirportTo);
+                cbAirportTo.removeAllItems();
+                for (Airport airport : airportsFrom) {
+                    cbAirportTo.addItem(airport);
+                }
+                cbAirportTo.setSelectedIndex(-1);
+                cbAirportTo.addItemListener(itemListenerAirportTo);
+                cbFlight.removeAllItems();
+            }
+        };
+
+        cbCountryTo.setSelectedIndex(-1);
+        cbCountryTo.addItemListener(itemListenerCountryTo);
 
         buttonBack.addActionListener(new ActionListener() {
             private User user;
@@ -83,51 +121,5 @@ public class JFrameAddTicket extends JFrame {
                 return this;
             }
         }.init(user));
-
-        cbCountryFrom.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Country selected = (Country) cbCountryFrom.getSelectedItem();
-                ArrayList<Airport> airportsFrom = airportManager.getAirports(selected);
-                cbAirportFrom.removeItemListener(itemListenerAirportFrom);
-                cbAirportFrom.removeAllItems();
-                for (Airport airport : airportsFrom) {
-                    cbAirportFrom.addItem(airport);
-                }
-                cbAirportFrom.setSelectedIndex(-1);
-                cbAirportFrom.addItemListener(itemListenerAirportFrom);
-            }
-        });
-
-        cbCountryTo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Country selected = (Country) cbCountryTo.getSelectedItem();
-                ArrayList<Airport> airportsFrom = airportManager.getAirports(selected);
-                cbAirportTo.removeItemListener(itemListenerAirportTo);
-                cbAirportTo.removeAllItems();
-                for (Airport airport : airportsFrom) {
-                    cbAirportTo.addItem(airport);
-                }
-                cbAirportTo.setSelectedIndex(-1);
-                cbAirportTo.addItemListener(itemListenerAirportTo);
-            }
-        });
-
-//        cbAirportFrom.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                airportsSelected[0] = (Airport) cbAirportFrom.getSelectedItem();
-//                if (airportsSelected[1] == null) {
-//                    return;
-//                }
-//                ArrayList<Flight> flights = flightManager.getFlights(airportsSelected[0], airportsSelected[1]);
-//                cbFlight.removeAllItems();
-//                for (Flight flight : flights) {
-//                    cbFlight.addItem(flight);
-//                }
-//            }
-//        });
-
     }
 }
