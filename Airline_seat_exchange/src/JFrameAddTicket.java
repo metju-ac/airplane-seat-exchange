@@ -127,7 +127,13 @@ public class JFrameAddTicket extends JFrame {
             private User user;
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                Flight flight = (Flight) cbFlight.getSelectedItem();
+                if (flight == null) {
+                    JOptionPane.showMessageDialog(new JFrame(), "No flight selected!");
+                    return;
+                }
+                new JFrameAddSeats(user, flight);
+                dispose();
             }
             private ActionListener init(User user) {
                 this.user = user;

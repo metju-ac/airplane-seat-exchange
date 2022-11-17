@@ -12,6 +12,10 @@ public class Flight {
         return this.id;
     }
 
+    public String getFlightCode() {
+        return this.flightCode;
+    }
+
     public Flight(int id, String code, int fromId, int toId, Timestamp dep, Timestamp arr) {
         this.id = id;
         this.flightCode = code;
