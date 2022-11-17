@@ -13,6 +13,7 @@ public class JFrameAddTicket extends JFrame {
     private JButton buttonBack;
     private JPanel mainPanel;
     private JComboBox cbFlight;
+    private JButton buttonConfirm;
 
     public JFrameAddTicket(User user) {
         assert user != null;
@@ -115,6 +116,18 @@ public class JFrameAddTicket extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 new JFrameLoggedIn(this.user);
                 dispose();
+            }
+            private ActionListener init(User user) {
+                this.user = user;
+                return this;
+            }
+        }.init(user));
+
+        buttonConfirm.addActionListener(new ActionListener() {
+            private User user;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
             private ActionListener init(User user) {
                 this.user = user;
