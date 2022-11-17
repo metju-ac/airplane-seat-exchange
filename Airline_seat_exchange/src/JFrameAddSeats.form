@@ -16,17 +16,20 @@
           <text value="Selected flight:"/>
         </properties>
       </component>
-      <vspacer id="9e19e">
-        <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </vspacer>
       <component id="6640" class="javax.swing.JLabel" binding="labelFlight">
         <constraints>
           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Label"/>
+        </properties>
+      </component>
+      <component id="3a125" class="javax.swing.JButton" binding="buttonBack">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Back"/>
         </properties>
       </component>
     </children>
