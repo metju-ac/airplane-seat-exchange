@@ -39,7 +39,7 @@ public class JFrameChangeEmail extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String oldEmail = tfOldEmail.getText();
                 String newEmail = tfNewEmail.getText();
-                String password = pfPassword.getText();
+                char[] password = pfPassword.getPassword();
 
                 if (Objects.equals(oldEmail, "")) {
                     JOptionPane.showMessageDialog(new JFrame(), "Empty old email!");

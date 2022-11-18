@@ -29,13 +29,13 @@ public class JFrameLogin extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = tfUsername.getText();
-                String password = pfPassword.getText();
+                char[] password = pfPassword.getPassword();
 
                 if (Objects.equals(username, "")) {
                     JOptionPane.showMessageDialog(new JFrame(), "Empty username!");
                     return;
                 }
-                if (Objects.equals(password, "")) {
+                if (password.length == 0) {
                     JOptionPane.showMessageDialog(new JFrame(), "Empty password!");
                     return;
                 }

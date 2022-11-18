@@ -32,7 +32,7 @@ public class JFrameRegister extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String username = tfUsername.getText();
                 String email = tfEmail.getText();
-                String password = pfPassword.getText();
+                char[] password = pfPassword.getPassword();
 
                 if (Objects.equals(username, "")) {
                     JOptionPane.showMessageDialog(new JFrame(), "Empty username!");
@@ -42,7 +42,7 @@ public class JFrameRegister extends JFrame {
                     JOptionPane.showMessageDialog(new JFrame(), "Empty email!");
                     return;
                 }
-                if (Objects.equals(password, "")) {
+                if (password.length == 0) {
                     JOptionPane.showMessageDialog(new JFrame(), "Empty password!");
                     return;
                 }

@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
 
 public class JFrameChangePassword extends JFrame{
     private JPasswordField pfNewPassword;
@@ -36,15 +35,15 @@ public class JFrameChangePassword extends JFrame{
             private User user;
             @Override
             public void actionPerformed(ActionEvent e) {
-                String oldPassword = pfOldPassword.getText();
-                String newPassword = pfNewPassword.getText();
+                char[] oldPassword = pfOldPassword.getPassword();
+                char[] newPassword = pfNewPassword.getPassword();
 
-                if (Objects.equals(oldPassword, "")) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Empty old email!");
+                if (oldPassword.length == 0) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Empty old password!");
                     return;
                 }
-                if (Objects.equals(newPassword, "")) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Empty new email!");
+                if (newPassword.length == 0) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Empty new password!");
                     return;
                 }
 

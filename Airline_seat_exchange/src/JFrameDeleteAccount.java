@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
 
 public class JFrameDeleteAccount extends JFrame{
     private JPasswordField pfPassword;
@@ -35,8 +34,8 @@ public class JFrameDeleteAccount extends JFrame{
             private User user;
             @Override
             public void actionPerformed(ActionEvent e) {
-                String password = pfPassword.getText();
-                if (Objects.equals(password, "")) {
+                char[] password = pfPassword.getPassword();
+                if (password.length == 0) {
                     JOptionPane.showMessageDialog(new JFrame(), "Empty password!");
                     return;
                 }

@@ -1,11 +1,12 @@
 import java.sql.*;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class User {
     private final String username;
-    private String password;
+    private char[] password;
     private String email;
     private int score;
 
@@ -21,7 +22,7 @@ public class User {
         return this.score;
     }
 
-    public User(String u, String p, String e) {
+    public User(String u, char[] p, String e) {
         this.username = u;
         this.password = p;
         this.email = e;
@@ -79,7 +80,7 @@ public class User {
         if (! checkEmailFormat(this.email)) {
             return 3;
         }
-        if (! checkPassword(this.password)) {
+        if (! checkPassword(new String(this.password))) {
             return 4;
         }
 
@@ -88,7 +89,7 @@ public class User {
             String sql = "INSERT INTO user (username, password, email, score) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, this.username);
-            statement.setString(2, this.password);
+            statement.setString(2, new String(this.password));
             statement.setString(3, this.email);
             statement.setInt(4, this.score);
 
@@ -103,7 +104,7 @@ public class User {
         return -1;
     }
 
-    public int Login(String password) {
+    public int Login(char[] password) {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/airplane_seat_exchange",
                 "root", "Rootroot")) {
             String sql = "SELECT * FROM user WHERE username=?";
@@ -114,7 +115,7 @@ public class User {
             if (! rs.next()) {
                 return 1;
             }
-            if (!Objects.equals(rs.getString("password"), password)) {
+            if (!Objects.equals(rs.getString("password"), new String(password))) {
                 return 2;
             }
 
@@ -129,11 +130,11 @@ public class User {
         return -1;
     }
 
-    public int changeEmail(String oldEmail, String newEmail, String password) {
+    public int changeEmail(String oldEmail, String newEmail, char[] password) {
         if (!Objects.equals(oldEmail, this.email)) {
             return 1;
         }
-        if (!Objects.equals(password, this.password)) {
+        if (!Arrays.equals(password, this.password)) {
             return 2;
         }
         if (!checkEmailFormat(newEmail)) {
@@ -161,11 +162,11 @@ public class User {
         return -1;
     }
 
-    public int changePassword(String oldPassword, String newPassword) {
-        if (!Objects.equals(oldPassword, this.password)) {
+    public int changePassword(char[] oldPassword, char[] newPassword) {
+        if (!Arrays.equals(oldPassword, this.password)) {
             return 1;
         }
-        if (!checkPassword(newPassword)) {
+        if (!checkPassword(new String(newPassword))) {
             return 2;
         }
 
@@ -173,7 +174,7 @@ public class User {
                 "root", "Rootroot")) {
             String sql = "UPDATE user SET password = ? WHERE username = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, newPassword);
+            statement.setString(1, new String(newPassword));
             statement.setString(2, this.username);
 
             int rowsChanged = statement.executeUpdate();
@@ -187,8 +188,8 @@ public class User {
         return -1;
     }
 
-    public int deleteAccount(String password) {
-        if (!Objects.equals(password, this.password)) {
+    public int deleteAccount(char[] password) {
+        if (!Arrays.equals(password, this.password)) {
             return 1;
         }
 
